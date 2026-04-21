@@ -300,3 +300,38 @@ class Quizgame:
         for i, quiz in enumerate(self.quizzes, start=1):
             quiz.display(index=i)
             print(f"  ▶ 정답: {quiz.correct_text()}")
+
+    # ══════════════════════════════════════
+    # 점수 확인
+    # ══════════════════════════════════════
+
+    def show_score(self) -> None:
+        print("\n" + "─" * 40)
+        print("  🏆  최고 점수")
+        print("─" * 40)
+
+        if self.best_score == 0:
+            print("  아직 퀴즈를 풀지 않았습니다. 도전해 보세요! 💪")
+        else:
+            total = len(self.quizzes)
+            pct = self.best_score * 100 // total if total else 0
+            print(f"  최고 정답 수: {self.best_score} / {total}  ({pct}%)")
+
+# ──────────────────────────────────────────
+# 진입점
+# ──────────────────────────────────────────
+
+def main():
+    try:
+        game = QuizGame()
+        game.run()
+    except KeyboardInterrupt:
+        print("\n\n⚠️  강제 종료 감지. 저장 후 종료합니다.")
+        try:
+            game.save()
+        except Exception:
+            pass
+        sys.exit(0)
+
+if __name__ == "__main__":
+    main()
