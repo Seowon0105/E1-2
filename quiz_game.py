@@ -32,10 +32,19 @@ class Quiz:
         answer = data["answer"]
         if isinstance(answer, list):
             answer = answer[0]   # 리스트로 잘못 저장된 경우 첫 번째 값 사용
+            
+        answer = int(answer)
+        choices = data["choices"]
+        
+        if not isinstance(choices, list):
+            raise TypeError("choices는 리스트여야 합니다.")
+        if not (1 <= answer <= len(choices)):
+            raise ValueError(f"정답 번호({answer})가 선택지 범위를 벗어났습니다.")
+
         return cls(
             question=data["question"],
-            choices=data["choices"],
-            answer=int(answer),  # 항상 int로 변환
+            choices=choices,
+            answer=answer,
         )
 
     def display(self, index=None) -> None:
@@ -161,8 +170,8 @@ class QuizGame:
             self.best_score = int(data.get("best_score", 0))
             print(f"✅ 저장 파일을 불러왔습니다. (퀴즈 {len(self.quizzes)}개)")
 
-        except (json.JSONDecodeError, KeyError, ValueError, TypeError) as e:
-            print(f"⚠️  저장 파일이 손상되었습니다 ({e}). 기본 데이터로 초기화합니다.")
+        except (json.JSONDecodeError, KeyError, ValueError, TypeError, OSError) as e:
+            print(f"⚠️  저장 파일이 손상되었거나 접근할 수 없습니다 ({e}). 기본 데이터로 초기화합니다.")
             self.quizzes = list(DEFAULT_QUIZZES)
             self.best_score = 0
 
@@ -175,7 +184,9 @@ class QuizGame:
             with open(STATE_FILE, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
         except OSError as e:
-            print(f"❌ 파일 저장 실패: {e}")
+            print(f"❌ 파일 저장 실패 (디스크 문제): {e}")
+        except TypeError as e:
+            print(f"❌ 데이터 직렬화 실패 (JSON 변환 불가): {e}")
 
     # ══════════════════════════════════════
     # 메뉴
@@ -332,16 +343,21 @@ class QuizGame:
 # ──────────────────────────────────────────
 
 def main():
+    game = None
     try:
         game = QuizGame()
         game.run()
     except KeyboardInterrupt:
-        print("\n\n⚠️  강제 종료 감지. 저장 후 종료합니다.")
-        try:
+        print("\n강제 종료 감지. 저장 후 종료합니다.")
+        if game is not None:
             game.save()
-        except Exception:
-            pass
         sys.exit(0)
+    except Exception as e:
+        print(f"\n치명적인 오류가 발생했습니다: {e}")
+        if game is not None:
+            print("데이터를 안전하게 저장합니다...")
+            game.save()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
