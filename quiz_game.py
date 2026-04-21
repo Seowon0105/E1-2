@@ -119,5 +119,55 @@ def input_text (prompt: str):
             print("  ⚠️  내용을 입력해 주세요.")
             continue
         return raw
-    
-    
+
+# ──────────────────────────────────────────
+# QuizGame 클래스
+# ──────────────────────────────────────────
+
+class Quizgame:
+    """퀴즈 게임 전체를 관리하는 클래스"""
+
+
+    def __init__(self):
+        self.quizzes = []
+        self.best_score = 0
+        self._load()
+
+    # ══════════════════════════════════════
+    # 파일 저장 / 불러오기
+    # ══════════════════════════════════════
+
+    def _load(self) -> None:
+        if not os.path.exists(STATE_FILE):
+            print("📂 저장 파일이 없습니다. 기본 퀴즈 데이터를 사용합니다.")
+            self.quizzes = list(DEFAULT_QUIZZES)
+            return
+        
+        try:
+            with open(STATE_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            raw_quizzes = data.get("quizzes", [])
+            if not isinstance(raw_quizzes, list):
+                raise ValueError("quizzes 필드가 올바르지 않습니다.")
+            
+            self.quizzes = [Quiz.from_dict(q) for q in raw_quizzes]
+            self.best_score = int(data.get("best_score", 0))
+            print(f"✅ 저장 파일을 불러왔습니다. (퀴즈 {len(self.quizzes)}개)")
+        
+        except (json.JSONDecodeError, KeyError, ValueError, TypeError) as e:
+            print(f"⚠️  저장 파일이 손상되었습니다 ({e}). 기본 데이터로 초기화합니다.")
+            self.quizzes = list(DEFAULT_QUIZZES)
+            self.best_score = 0
+        
+    def save(self) -> None:
+        data = {
+            "quizzes": [q.to_dict() for q in self.quizzes],
+            "best_score": self.best_score,
+        }
+
+        try:
+            with open(STATE_FILE, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except OSError as e:
+            print(f"❌ 파일 저장 실패: {e}")
