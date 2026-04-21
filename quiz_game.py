@@ -256,3 +256,47 @@ class Quizgame:
 
         print("=" * 40)
         self.save()
+
+    # ══════════════════════════════════════
+    # 퀴즈 추가
+    # ══════════════════════════════════════
+
+    def add_quiz(self) -> None:
+        print("\n" + "─" * 40)
+        print("  새 퀴즈 추가")
+        print("─" * 40)
+
+        question = input_text("문제를 입력하세요: ")
+        if question is None:
+            print("⚠️  입력이 취소되었습니다.")
+            return
+        
+        choices = []
+        for i in range(1,5):
+            choice = input_text(f"선택지 {i}번을 입력하세요: ")
+            if choice is None:
+                print("⚠️  입력이 취소되었습니다.")
+                return
+            choices.append(choice)
+
+        answer = input_int("정답 번호를 입력하세요 (1~4): ", 1, 4)
+        if answer is None:
+            print("⚠️  입력이 취소되었습니다.")
+            return
+        
+    # ══════════════════════════════════════
+    # 퀴즈 목록
+    # ══════════════════════════════════════
+
+    def list_quizzes(self) -> None:
+        if not self.quizzes:
+            print("\n📭 등록된 퀴즈가 없습니다.")
+            return
+        
+        print("\n" + "─" * 40)
+        print(f"  퀴즈 목록 (총 {len(self.quizzes)}개)")
+        print("─" * 40)
+
+        for i, quiz in enumerate(self.quizzes, start=1):
+            quiz.display(index=i)
+            print(f"  ▶ 정답: {quiz.correct_text()}")
