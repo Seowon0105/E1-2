@@ -171,3 +171,52 @@ class Quizgame:
                 json.dump(data, f, ensure_ascii=False, indent=2)
         except OSError as e:
             print(f"❌ 파일 저장 실패: {e}")
+    
+    # ══════════════════════════════════════
+    # 메뉴
+    # ══════════════════════════════════════
+
+    def show_menu(self) -> None:
+        print("\n" + "=" * 40)
+        print("       🏀  농구 퀴즈 게임  🏀")
+        print("=" * 40)
+        print("  1. 퀴즈 풀기")
+        print("  2. 퀴즈 추가")
+        print("  3. 퀴즈 목록")
+        print("  4. 점수 확인")
+        print("  5. 종료")
+        print("=" * 40)
+
+    def run(self) -> None:
+        print("\n농구 퀴즈 게임에 오신 것을 환영합니다! 🏀")
+
+        while True:
+            self.show_menu()
+            choice = input_int("번호를 선택하세요", 1, 5)
+
+            if choice is None:
+                self._exit_gracefully()
+                return
+        
+            if choice == 1:
+                self.play()
+            elif choice == 2:
+                self.add_quiz()
+            elif choice == 3:
+                self.list_quizzes()
+            elif choice == 4:
+                self.show_score()
+            elif choice == 5:
+                self._exit_gracefully()
+                return
+            
+    def _exit_gracefully(self) -> None:
+        print("\n💾 데이터를 저장하고 종료합니다. 안녕히 가세요! 👋")
+        self.save()
+
+    # ══════════════════════════════════════
+    # 퀴즈 풀기
+    # ══════════════════════════════════════
+    
+    
+    
