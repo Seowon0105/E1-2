@@ -47,3 +47,78 @@ python quiz_game.py
 - `state.json` 없음 / 손상 → 기본 데이터로 자동 복구
 
 ---
+
+## 📁 파일 구조
+
+```
+.
+├── quiz_game.py   # 메인 소스 (Quiz 클래스, QuizGame 클래스)
+├── state.json     # 퀴즈 데이터 + 최고 점수 (자동 생성)
+├── README.md      # 프로젝트 설명
+└── .gitignore     # __pycache__ 등 제외 목록
+```
+
+---
+
+## 🗄️ 데이터 파일 설명 (`state.json`)
+
+**경로:** 프로젝트 루트 `./state.json`  
+**인코딩:** UTF-8  
+**역할:** 퀴즈 목록과 최고 정답 수를 프로그램 종료 후에도 유지
+
+**스키마 예시:**
+
+```json
+{
+  "quizzes": [
+    {
+      "question": "NBA 역사상 통산 득점 1위 선수는?",
+      "choices": ["마이클 조던",
+        "코비 브라이언트",
+        "르브론 제임스",
+        "카림 압둘자바"],
+      "answer": 3
+    }
+  ],
+  "best_score": 2
+}
+```
+
+| 키 | 타입 | 설명 |
+|----|------|------|
+| `quizzes` | `list` | Quiz 객체 배열. 각 항목은 `question`, `choices`, `answer` 포함 |
+| `best_score` | `int` | 역대 최고 정답 수 |
+
+---
+
+## 📝 코드 구조
+
+### `Quiz` 클래스
+개별 퀴즈 1개를 표현합니다.
+
+| 속성/메서드 | 설명 |
+|-------------|------|
+| `question` | 문제 텍스트 |
+| `choices` | 선택지 리스트 (4개) |
+| `answer` | 정답 번호 (1~4) |
+| `display()` | 문제와 선택지 출력 |
+| `check(n)` | 입력 번호가 정답인지 확인 |
+| `to_dict()` | JSON 직렬화용 dict 반환 |
+| `from_dict()` | dict에서 Quiz 인스턴스 생성 |
+
+### `QuizGame` 클래스
+게임 전체 흐름을 관리합니다.
+
+| 속성/메서드 | 설명 |
+|-------------|------|
+| `quizzes` | 퀴즈 목록 |
+| `best_score` | 최고 정답 수 |
+| `run()` | 메인 루프 |
+| `play()` | 퀴즈 풀기 진행 |
+| `add_quiz()` | 새 퀴즈 입력 및 등록 |
+| `list_quizzes()` | 전체 퀴즈 출력 |
+| `show_score()` | 최고 점수 출력 |
+| `save()` | state.json에 저장 |
+| `_load()` | state.json에서 불러오기 |
+
+---
