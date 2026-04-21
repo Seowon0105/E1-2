@@ -122,3 +122,5 @@ python quiz_game.py
 | `_load()` | state.json에서 불러오기 |
 
 ---
+
+git pull test 문장
