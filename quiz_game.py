@@ -218,5 +218,41 @@ class Quizgame:
     # 퀴즈 풀기
     # ══════════════════════════════════════
     
-    
-    
+
+    def play_self(self) -> None:
+        if not self.quizzes:
+            print("\n📭 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
+            return
+        
+        print("\n" + "─" * 40)
+        print(f"  총 {len(self.quizzes)}문제를 풀겠습니다!")
+        print("─" * 40)
+
+        score = 0
+        for i, quiz in enumerate(self.quizzes, start=1):
+            print(f"\n  문제 {i} / {len(self.quizzes)}")
+            quiz.display()
+
+            answer = input_int("정답 번호를 입력하세요 (1~4): ", 1, 4)
+            if answer is None:
+                print("\n⚠️  게임이 중단되었습니다.")
+                break
+
+            if quiz.check(answer):
+                print("  ✅ 정답입니다!")
+                score += 1
+            else:
+                print(f"  ❌ 오답입니다. 정답은 {quiz.correct_text()} 입니다.")
+        
+        total = len(self.quizzes)
+        print("\n" + "=" * 40)
+        print(f"  🎯 결과: {score} / {total}  ({score * 100 // total}%)")
+
+        if score > self.best_score:
+            print(f"  🏆 새로운 최고 점수! ({self.best_score} → {score})")
+            self.best_score = score
+        else:
+            print(f"  현재 최고 점수: {self.best_score}")
+
+        print("=" * 40)
+        self.save()
