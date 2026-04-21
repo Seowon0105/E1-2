@@ -1,0 +1,71 @@
+{
+  "quizzes": [
+    {
+      "question": [
+        "question"
+      ],
+      "choices": [
+        "choices"
+      ],
+      "answer": [
+        "answer"
+      ]
+    },
+    {
+      "question": [
+        "question"
+      ],
+      "choices": [
+        "choices"
+      ],
+      "answer": [
+        "answer"
+      ]
+    },
+    {
+      "question": [
+        "question"
+      ],
+      "choices": [
+        "choices"
+      ],
+      "answer": [
+        "answer"
+      ]
+    },
+    {
+      "question": [
+        "question"
+      ],
+      "choices": [
+        "choices"
+      ],
+      "answer": [
+        "answer"
+      ]
+    },
+    {
+      "question": [
+        "question"
+      ],
+      "choices": [
+        "choices"
+      ],
+      "answer": [
+        "answer"
+      ]
+    },
+    {
+      "question": [
+        "question"
+      ],
+      "choices": [
+        "choices"
+      ],
+      "answer": [
+        "answer"
+      ]
+    }
+  ],
+  "best_score": 0
+}

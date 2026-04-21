@@ -103,7 +103,7 @@ def input_int (prompt: str, lo: int, hi: int):
         except ValueError:
             print(f"  ⚠️  숫자만 입력해 주세요. ('{raw}'은 유효하지 않습니다)")
             continue
-        if not (lo <= value >= hi):
+        if not (lo <= value <= hi):
             print(f"  ⚠️  {lo}~{hi} 범위의 숫자를 입력해 주세요.")
             continue
         return value
