@@ -323,7 +323,7 @@ class Quizgame:
 
 def main():
     try:
-        game = QuizGame()
+        game = Quizgame()
         game.run()
     except KeyboardInterrupt:
         print("\n\n⚠️  강제 종료 감지. 저장 후 종료합니다.")
